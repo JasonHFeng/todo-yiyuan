@@ -8,11 +8,11 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 const routes = [
-    // {
-    //     name: 'home',
-    //     path: '/',
-    //     redirect: '/sellment'
-    // },
+    {
+        name: 'home',
+        path: '/',
+        redirect: '/login'
+    },
     {
         name: 'login',
         path: '/login',

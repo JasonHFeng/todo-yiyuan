@@ -1,0 +1,35 @@
+// 登录页
+@import "../common/config.less";
+
+.login-wrap {
+    position: relative;
+    width: 87%;
+    height: 100%;
+    margin: 0 auto;
+    .weui-cells.vux-no-group-title {
+        margin-top: 0;
+    }
+    .loginwrap-logo {
+        height: ~"calc(100% - 221px)";
+        text-align: center;
+        background-image: url("@{images}/logo.png");
+        background-position: center center;
+        background-size: 50%;
+        background-repeat: no-repeat;
+        img {
+            width: 50%;
+        }
+    }
+    .loginwrap-form {
+        width: 100%;
+        padding-bottom: 20px;
+        .login-tip {
+            margin-top: 10px;
+            text-align: center;
+            color: #969393;
+            a {
+                color: #525151;
+            }
+        }
+    }
+}
