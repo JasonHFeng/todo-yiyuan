@@ -19,6 +19,11 @@ const routes = [
         component: require('../components/account/login.vue')
     },
     {
+        name: 'signup',
+        path: '/signup',
+        component: require('../components/account/signUp.vue')
+    },
+    {
         name: 'notfound',
         path: '/404',
         component: require('../components/common/notfound.vue')

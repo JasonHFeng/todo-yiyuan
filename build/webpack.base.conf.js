@@ -65,6 +65,7 @@ const webpackConfig = {
     }
 }
 
+// vux-loader插件配置
 const vuxLoader = require('vux-loader')
 module.exports = vuxLoader.merge(webpackConfig, {
     options: {},
@@ -74,6 +75,11 @@ module.exports = vuxLoader.merge(webpackConfig, {
         },
         {
             name: 'duplicate-style'
+        },
+        // 覆盖vux样式
+        {
+            name: 'less-theme',
+            path: './src/static/styles/theme.less'
         }
     ]
 })
