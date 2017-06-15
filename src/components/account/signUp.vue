@@ -6,7 +6,7 @@
             <x-input title="昵称" v-model="form.nikename" placeholder=""></x-input>
             <x-input title="账号" v-model="form.account" placeholder=""></x-input>
             <x-input title="密码" v-model="form.password" type="password" placeholder=""></x-input>
-            <datetime title="生日" v-model="form.birthday" confirm-text="确认" cancel-text="取消"></datetime>
+            <datetime title="生日" v-model="form.birthday" confirm-text="确认" :max-year=2017 :min-year=1900 cancel-text="取消"></datetime>
         </group>
 
         <x-button type="primary" class="mar-top30">创建</x-button>

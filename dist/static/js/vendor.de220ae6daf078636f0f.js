@@ -1,4 +1,4 @@
-webpackJsonp([0],[
+webpackJsonp([1],[
 /* 0 */
 /***/ (function(module, exports) {
 
@@ -478,7 +478,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(81)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(89)))
 
 /***/ }),
 /* 4 */,
@@ -10431,7 +10431,7 @@ module.exports = function bind(fn, thisArg) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixin_uuid__ = __webpack_require__(63);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixin_uuid__ = __webpack_require__(66);
 
 
 /* harmony default export */ __webpack_exports__["a"] = ({
@@ -10483,7 +10483,7 @@ module.exports = function bind(fn, thisArg) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_object_assign__ = __webpack_require__(80);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_object_assign__ = __webpack_require__(88);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_object_assign___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_object_assign__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return mergeOptions; });
 
@@ -10585,7 +10585,7 @@ const $http = __WEBPACK_IMPORTED_MODULE_0_axios___default.a;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_alert__ = __webpack_require__(101);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_alert__ = __webpack_require__(112);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_alert___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_alert__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__libs_plugin_helper__ = __webpack_require__(12);
 
@@ -10607,11 +10607,8 @@ const plugin = {
       show(options = {}) {
         if (typeof options === 'object') {
           __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__libs_plugin_helper__["a" /* mergeOptions */])($vm, options);
-          if (options.content) {
-            $vm.$el.querySelector('.weui-dialog__bd').innerHTML = options['content'];
-          }
         } else if (typeof options === 'string') {
-          $vm.$el.querySelector('.weui-dialog__bd').innerHTML = options;
+          $vm.content = options;
         }
         this.watcher && this.watcher();
         this.watcher = $vm.$watch('showValue', val => {
@@ -10656,7 +10653,7 @@ const install = plugin.install;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_toast__ = __webpack_require__(103);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_toast__ = __webpack_require__(116);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_toast___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_toast__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__libs_plugin_helper__ = __webpack_require__(12);
 
@@ -10699,6 +10696,14 @@ const plugin = {
           });
         }
         $vm.show = true;
+      },
+      text(text, position = 'default') {
+        this.show({
+          type: 'text',
+          width: 'auto',
+          position,
+          text
+        });
       },
       hide() {
         $vm.show = false;
@@ -12431,14 +12436,16 @@ module.exports = function spread(callback) {
 /* 53 */,
 /* 54 */,
 /* 55 */,
-/* 56 */
+/* 56 */,
+/* 57 */,
+/* 58 */,
+/* 59 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__picker_scroller__ = __webpack_require__(61);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__picker_scroller___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__picker_scroller__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__(59);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__makeData__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__picker_scroller__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__(62);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__makeData__ = __webpack_require__(61);
 
 
 
@@ -12487,6 +12494,8 @@ var DEFAULT_CONFIG = {
   maxYear: 2030,
   minHour: 0,
   maxHour: 23,
+  hourList: null,
+  minuteList: null,
   startDate: null,
   endDate: null,
   yearRow: '{value}',
@@ -12507,12 +12516,15 @@ var DEFAULT_CONFIG = {
 };
 
 function renderScroller(el, data, value, fn) {
-  var scroller = new __WEBPACK_IMPORTED_MODULE_0__picker_scroller___default.a(el, {
-    data: data,
-    defaultValue: value,
+  data = data.map(one => {
+    one.value = one.value + '';
+    return one;
+  });
+  return new __WEBPACK_IMPORTED_MODULE_0__picker_scroller__["a" /* default */](el, {
+    data,
+    defaultValue: value + '',
     onSelect: fn
   });
-  return scroller;
 }
 
 function showMask() {
@@ -12636,18 +12648,19 @@ DatetimePicker.prototype = {
         self[type + 'Scroller'] = renderScroller(div, data, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__util__["d" /* trimZero */])(newValueMap[type]), function (currentValue) {
           config.onSelect.call(self, type, currentValue);
           var currentDay;
-          if (!self.dayScroller) {
-            return;
-          }
           if (type === 'year') {
             var currentMonth = self.monthScroller ? self.monthScroller.value : config.currentMonth;
-            currentDay = self.dayScroller.value;
             self._setMonthScroller(currentValue, currentMonth);
-            self._setDayScroller(currentValue, currentMonth, currentDay);
+            if (self.dayScroller) {
+              currentDay = self.dayScroller.value;
+              self._setDayScroller(currentValue, currentMonth, currentDay);
+            }
           } else if (type === 'month') {
             var currentYear = self.yearScroller ? self.yearScroller.value : config.currentYear;
-            currentDay = self.dayScroller.value;
-            self._setDayScroller(currentYear, currentValue, currentDay);
+            if (self.dayScroller) {
+              currentDay = self.dayScroller.value;
+              self._setDayScroller(currentYear, currentValue, currentDay);
+            }
           }
         });
       });
@@ -12703,8 +12716,8 @@ DatetimePicker.prototype = {
       max = config.maxYear;
       if (this.reMakeData) {
         const { minYear, maxYear } = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__makeData__["a" /* getYears */])(this.config.startDate, this.config.endDate);
-        min = Math.max(min, minYear);
-        max = Math.min(max, maxYear);
+        min = minYear;
+        max = maxYear;
       }
     } else if (type === 'month') {
       min = 1;
@@ -12742,6 +12755,22 @@ DatetimePicker.prototype = {
         value: i
       });
     }
+    if (type === 'hour' && this.config.hourList) {
+      data = this.config.hourList.map(hour => {
+        return {
+          name: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__util__["h" /* parseRow */])(config['hourRow'], hour),
+          value: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__util__["i" /* addZero */])(hour)
+        };
+      });
+    }
+    if (type === 'minute' && this.config.minuteList) {
+      data = this.config.minuteList.map(minute => {
+        return {
+          name: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__util__["h" /* parseRow */])(config['minuteRow'], minute),
+          value: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__util__["i" /* addZero */])(minute)
+        };
+      });
+    }
     return data;
   },
 
@@ -12753,8 +12782,10 @@ DatetimePicker.prototype = {
     self.monthScroller = renderScroller(div, self._makeData('month'), month, function (currentValue) {
       self.config.onSelect.call(self, 'month', currentValue);
       var currentYear = self.yearScroller ? self.yearScroller.value : self.config.currentYear;
-      const currentDay = self.dayScroller.value;
-      self._setDayScroller(currentYear, currentValue, currentDay);
+      if (self.dayScroller) {
+        const currentDay = self.dayScroller.value;
+        self._setDayScroller(currentYear, currentValue, currentDay);
+      }
     });
   },
 
@@ -12854,7 +12885,7 @@ DatetimePicker.prototype = {
 /* harmony default export */ __webpack_exports__["a"] = (DatetimePicker);
 
 /***/ }),
-/* 57 */
+/* 60 */
 /***/ (function(module, exports) {
 
 module.exports = function (date, fmt = 'YYYY-MM-DD HH:mm:ss') {
@@ -12892,7 +12923,7 @@ module.exports = function (date, fmt = 'YYYY-MM-DD HH:mm:ss') {
 };
 
 /***/ }),
-/* 58 */
+/* 61 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12971,11 +13002,11 @@ function getDays(startDate, endDate, year, month) {
 
 
 /***/ }),
-/* 59 */
+/* 62 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__format__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__format__ = __webpack_require__(60);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__format___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__format__);
 /* harmony export (immutable) */ __webpack_exports__["b"] = each;
 /* harmony export (immutable) */ __webpack_exports__["d"] = trimZero;
@@ -13031,17 +13062,17 @@ function parseRow(tmpl, value) {
 
 // parse Date String
 function parseDate(format, value) {
-  var formatParts = format.split(/[^A-Za-z]+/);
-  var valueParts = value.split(/\D+/);
+  const formatParts = format.split(/[^A-Za-z]+/);
+  let valueParts = value.split(/\D+/);
   if (formatParts.length !== valueParts.length) {
     // if it is error date, use current date
-    var date = __WEBPACK_IMPORTED_MODULE_0__format___default()(new Date(), format);
+    const date = __WEBPACK_IMPORTED_MODULE_0__format___default()(new Date(), format);
     valueParts = date.split(/\D+/);
   }
 
-  var result = {};
+  let result = {};
 
-  for (var i = 0; i < formatParts.length; i++) {
+  for (let i = 0; i < formatParts.length; i++) {
     if (formatParts[i]) {
       result[formatParts[i]] = valueParts[i];
     }
@@ -13054,7 +13085,7 @@ function getElement(expr) {
 }
 
 function toElement(html) {
-  var tempContainer = document.createElement('div');
+  const tempContainer = document.createElement('div');
   tempContainer.innerHTML = html;
   return tempContainer.firstElementChild;
 }
@@ -13064,7 +13095,7 @@ function removeElement(el) {
 }
 
 /***/ }),
-/* 60 */
+/* 63 */
 /***/ (function(module, exports) {
 
 const time = Date.now || function () {
@@ -13206,9 +13237,10 @@ module.exports = {
 };
 
 /***/ }),
-/* 61 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 64 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
 /*
  * Anima Scroller
  * Based Zynga Scroller (http://github.com/zynga/scroller)
@@ -13224,8 +13256,8 @@ const TEMPLATE = `
 </div>
 `;
 
-const Animate = __webpack_require__(60);
-const { getElement, getComputedStyle, easeOutCubic, easeInOutCubic } = __webpack_require__(62);
+const Animate = __webpack_require__(63);
+const { getElement, getComputedStyle, easeOutCubic, easeInOutCubic } = __webpack_require__(65);
 
 var Scroller = function (container, options) {
   var self = this;
@@ -13258,11 +13290,11 @@ var Scroller = function (container, options) {
   var html = '';
   if (data.length && data[0].constructor === Object) {
     data.forEach(function (row) {
-      html += '<div class="' + self.options.itemClass + '" data-value="' + row.value + '">' + row.name + '</div>';
+      html += '<div class="' + self.options.itemClass + '" data-value=' + JSON.stringify({ value: row.value }) + '>' + row.name + '</div>';
     });
   } else {
     data.forEach(function (val) {
-      html += '<div class="' + self.options.itemClass + '" data-value="' + val + '">' + val + '</div>';
+      html += '<div class="' + self.options.itemClass + '" data-value=' + JSON.stringify({ value: val }) + '>' + val + '</div>';
     });
   }
   content.innerHTML = html;
@@ -13367,7 +13399,7 @@ var members = {
 
     var children = self.__content.children;
     for (var i = 0, len = children.length; i < len; i++) {
-      if (children[i].dataset.value === value) {
+      if (JSON.parse(children[i].dataset.value).value === value) {
         self.selectByIndex(i, animate);
         return;
       }
@@ -13419,7 +13451,7 @@ var members = {
       self.__prevValue = self.value;
     }
 
-    self.value = selectedItem.dataset.value;
+    self.value = JSON.parse(selectedItem.dataset.value).value;
   },
 
   __scrollingComplete() {
@@ -13759,10 +13791,10 @@ for (var key in members) {
   Scroller.prototype[key] = members[key];
 }
 
-module.exports = Scroller;
+/* harmony default export */ __webpack_exports__["a"] = (Scroller);
 
 /***/ }),
-/* 62 */
+/* 65 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13794,7 +13826,7 @@ function easeInOutCubic(pos) {
 }
 
 /***/ }),
-/* 63 */
+/* 66 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13805,7 +13837,32 @@ function easeInOutCubic(pos) {
 });
 
 /***/ }),
-/* 64 */
+/* 67 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = go;
+/* unused harmony export getUrl */
+function go(url, $router) {
+  if (/^javas/.test(url) || !url) return;
+  const useRouter = typeof url === 'object' || $router && typeof url === 'string' && !/http/.test(url);
+  if (useRouter) {
+    url === 'BACK' ? $router.go(-1) : $router.push(url);
+  } else {
+    window.location.href = url;
+  }
+}
+
+function getUrl(url, $router) {
+  // Make sure the href is right in hash mode
+  if ($router && !$router._history && typeof url === 'string' && !/http/.test(url)) {
+    return `#!${url}`;
+  }
+  return url && typeof url !== 'object' ? url : 'javascript:void(0);';
+}
+
+/***/ }),
+/* 68 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13825,21 +13882,63 @@ function easeInOutCubic(pos) {
 });
 
 /***/ }),
-/* 65 */
+/* 69 */
+/***/ (function(module, exports) {
+
+module.exports = function (date, fmt = 'YYYY-MM-DD HH:mm:ss') {
+  if (!date) {
+    return '';
+  }
+  if (typeof date === 'string') {
+    date = new Date(date.replace(/-/g, '/'));
+  }
+  if (typeof date === 'number') {
+    date = new Date(date);
+  }
+  var o = {
+    'M+': date.getMonth() + 1,
+    'D+': date.getDate(),
+    'h+': date.getHours() % 12 === 0 ? 12 : date.getHours() % 12,
+    'H+': date.getHours(),
+    'm+': date.getMinutes(),
+    's+': date.getSeconds(),
+    'q+': Math.floor((date.getMonth() + 3) / 3),
+    'S': date.getMilliseconds()
+  };
+  var week = {
+    '0': '\u65e5',
+    '1': '\u4e00',
+    '2': '\u4e8c',
+    '3': '\u4e09',
+    '4': '\u56db',
+    '5': '\u4e94',
+    '6': '\u516d'
+  };
+  if (/(Y+)/.test(fmt)) {
+    fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length));
+  }
+  if (/(E+)/.test(fmt)) {
+    fmt = fmt.replace(RegExp.$1, (RegExp.$1.length > 1 ? RegExp.$1.length > 2 ? '\u661f\u671f' : '\u5468' : '') + week[date.getDay() + '']);
+  }
+  for (var k in o) {
+    if (new RegExp('(' + k + ')').test(fmt)) {
+      fmt = fmt.replace(RegExp.$1, RegExp.$1.length === 1 ? o[k] : ('00' + o[k]).substr(('' + o[k]).length));
+    }
+  }
+  return fmt;
+};
+
+/***/ }),
+/* 70 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_debounce__ = __webpack_require__(79);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_debounce__ = __webpack_require__(87);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_debounce___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash_debounce__);
 
 /* harmony default export */ __webpack_exports__["a"] = (__WEBPACK_IMPORTED_MODULE_0_lodash_debounce___default.a);
 
 /***/ }),
-/* 66 */,
-/* 67 */,
-/* 68 */,
-/* 69 */,
-/* 70 */,
 /* 71 */,
 /* 72 */,
 /* 73 */,
@@ -13848,7 +13947,15 @@ function easeInOutCubic(pos) {
 /* 76 */,
 /* 77 */,
 /* 78 */,
-/* 79 */
+/* 79 */,
+/* 80 */,
+/* 81 */,
+/* 82 */,
+/* 83 */,
+/* 84 */,
+/* 85 */,
+/* 86 */,
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/**
@@ -14232,7 +14339,7 @@ module.exports = debounce;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(18)))
 
 /***/ }),
-/* 80 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14329,7 +14436,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 
 /***/ }),
-/* 81 */
+/* 89 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -14515,7 +14622,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 82 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14554,7 +14661,7 @@ function isByteLength(str, options) {
 module.exports = exports['default'];
 
 /***/ }),
-/* 83 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14573,11 +14680,11 @@ var _merge = __webpack_require__(13);
 
 var _merge2 = _interopRequireDefault(_merge);
 
-var _isByteLength = __webpack_require__(82);
+var _isByteLength = __webpack_require__(90);
 
 var _isByteLength2 = _interopRequireDefault(_isByteLength);
 
-var _isFQDN = __webpack_require__(84);
+var _isFQDN = __webpack_require__(92);
 
 var _isFQDN2 = _interopRequireDefault(_isFQDN);
 
@@ -14649,7 +14756,7 @@ function isEmail(str, options) {
 module.exports = exports['default'];
 
 /***/ }),
-/* 84 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14712,7 +14819,7 @@ function isFDQN(str, options) {
 module.exports = exports['default'];
 
 /***/ }),
-/* 85 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14787,20 +14894,23 @@ function isMobilePhone(str, locale) {
 module.exports = exports['default'];
 
 /***/ }),
-/* 86 */,
-/* 87 */,
-/* 88 */,
-/* 89 */,
-/* 90 */,
-/* 91 */,
-/* 92 */,
-/* 93 */,
 /* 94 */,
 /* 95 */,
 /* 96 */,
 /* 97 */,
 /* 98 */,
-/* 99 */
+/* 99 */,
+/* 100 */,
+/* 101 */,
+/* 102 */,
+/* 103 */,
+/* 104 */,
+/* 105 */,
+/* 106 */,
+/* 107 */,
+/* 108 */,
+/* 109 */,
+/* 110 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17084,7 +17194,7 @@ if (inBrowser && window.Vue) {
 
 
 /***/ }),
-/* 100 */
+/* 111 */
 /***/ (function(module, exports) {
 
 /**
@@ -17117,14 +17227,17 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 101 */,
-/* 102 */,
-/* 103 */,
-/* 104 */,
-/* 105 */,
-/* 106 */,
-/* 107 */,
-/* 108 */
+/* 112 */,
+/* 113 */,
+/* 114 */,
+/* 115 */,
+/* 116 */,
+/* 117 */,
+/* 118 */,
+/* 119 */,
+/* 120 */,
+/* 121 */,
+/* 122 */
 /***/ (function(module, exports) {
 
 /*
@@ -17180,7 +17293,7 @@ module.exports = function() {
 
 
 /***/ }),
-/* 109 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -17199,7 +17312,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(100)
+var listToStyles = __webpack_require__(111)
 
 /*
 type StyleObject = {
@@ -17402,4 +17515,4 @@ function applyToTag (styleElement, obj) {
 
 /***/ })
 ]);
-//# sourceMappingURL=vendor.b8e10757127ab2b0df2f.js.map
+//# sourceMappingURL=vendor.de220ae6daf078636f0f.js.map

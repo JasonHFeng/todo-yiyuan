@@ -1,6 +1,6 @@
 {
   "name": "yiyuan",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "记忆清单",
   "author": "董宏锋 <602029096@qq.com>",
   "private": true,
@@ -15,7 +15,7 @@
   "dependencies": {
     "vue": "^2.3.3",
     "vue-router": "^2.2.0",
-    "vux": "^2.1.1-rc.13"
+    "vux": "^2.3.7"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.2",
@@ -79,7 +79,7 @@
     "vue-loader": "^11.3.4",
     "vue-style-loader": "^2.0.0",
     "vue-template-compiler": "^2.3.3",
-    "vux-loader": "^1.0.56",
+    "vux-loader": "^1.0.66",
     "webpack": "^2.2.1",
     "webpack-bundle-analyzer": "^2.2.1",
     "webpack-dev-middleware": "^1.10.0",

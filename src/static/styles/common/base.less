@@ -16,13 +16,19 @@ a {
     text-decoration: none;
 }
 #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    font-family: '微软雅黑', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     height: 100%;
 }
 h1, h2, h3, h4, h5, h6 {
     font-weight: 500;
+}
+
+.app-bg {
+    background-image: url('../../images/bg.jpg');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
 }
 
 .mar {
@@ -37,5 +43,14 @@ h1, h2, h3, h4, h5, h6 {
 .pdd {
     &-bottom20 {
         padding-bottom: 20px;
+    }
+}
+
+.display-table {
+	display: table;
+	table-layout: fixed;
+    & > * {
+        display: table-cell;
+    	vertical-align: top;
     }
 }
